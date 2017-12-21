@@ -13,6 +13,13 @@ import weka.core.FastVector;
 import weka.core.Instances;
  
 public class WekaTest {
+	
+	private static String data_set_1="/home/jcorvi/workspace/WekaExample/resources/datasets-arie_ben_david/ERA.arff";
+	
+	private static String data_set_2="/home/jcorvi/workspace/WekaExample/resources/weather.txt";
+	
+	private static String data_set_hep="/home/jcorvi/workspace/WekaExample/resources/datasets-UCI//UCI/hepatitis.arff"; 
+	
 	public static BufferedReader readDataFile(String filename) {
 		BufferedReader inputReader = null;
  
@@ -24,9 +31,16 @@ public class WekaTest {
  
 		return inputReader;
 	}
- 
-	public static Evaluation classify(Classifier model,
-			Instances trainingSet, Instances testingSet) throws Exception {
+	
+	/**
+	 * 
+	 * @param model
+	 * @param trainingSet
+	 * @param testingSet
+	 * @return
+	 * @throws Exception
+	 */
+	public static Evaluation classify(Classifier model, Instances trainingSet, Instances testingSet) throws Exception {
 		Evaluation evaluation = new Evaluation(trainingSet);
  
 		model.buildClassifier(trainingSet);
@@ -60,13 +74,13 @@ public class WekaTest {
 	}
  
 	public static void main(String[] args) throws Exception {
-		BufferedReader datafile = readDataFile("weather.txt");
+		BufferedReader datafile = readDataFile(data_set_hep);
  
 		Instances data = new Instances(datafile);
 		data.setClassIndex(data.numAttributes() - 1);
  
 		// Do 10-split cross validation
-		Instances[][] split = crossValidationSplit(data, 10);
+		Instances[][] split = crossValidationSplit(data, 50);
  
 		// Separate split into training and testing arrays
 		Instances[] trainingSplits = split[0];
@@ -80,7 +94,7 @@ public class WekaTest {
 				new DecisionStump() //one-level decision tree
 		};
  
-		// Run for each model
+		// Run for each model 
 		for (int j = 0; j < models.length; j++) {
  
 			// Collect every group of predictions for current model in a FastVector
@@ -88,8 +102,9 @@ public class WekaTest {
  
 			// For each training-testing split pair, train and test the classifier
 			for (int i = 0; i < trainingSplits.length; i++) {
+				
+				
 				Evaluation validation = classify(models[j], trainingSplits[i], testingSplits[i]);
- 
 				predictions.appendElements(validation.predictions());
  
 				// Uncomment to see the summary for each training-testing pair.

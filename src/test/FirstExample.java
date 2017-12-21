@@ -33,6 +33,7 @@ public class FirstExample {
 			fc.setClassifier(j48);
 			// train and make predictions
 			fc.buildClassifier(train);
+			
 			for (int i = 0; i < train.numInstances(); i++) {
 			   double pred_value = fc.classifyInstance(train.instance(i));
 			   System.out.print("ID: " + train.instance(i).value(0));
