@@ -139,7 +139,13 @@ public class WekaTest {
 		
 	}
 	
-	
+	/**
+	 * Consersion de campos Numericos a Nominales.
+	 * @param dataProcessed
+	 * @param variables
+	 * @return
+	 * @throws Exception
+	 */
 	public  static Instances NumericToNominal(Instances dataProcessed, String variables) throws Exception {
 		weka.filters.unsupervised.attribute.NumericToNominal convert = new weka.filters.unsupervised.attribute.NumericToNominal();
 		String[] options = new String[2];
@@ -158,9 +164,10 @@ public class WekaTest {
 	private static void generateAssociations(Instances data) {
 		Apriori apriori = new Apriori();
 		apriori.setClassIndex(data.classIndex());
-		 
 		try {
+			System.out.println(data);
 			Instances data3 = NumericToNominal(data,"1-8");
+			System.out.println(data3);
 			apriori.buildAssociations(data3);
 			System.out.println(apriori);
 		} catch (Exception e) {
