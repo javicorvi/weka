@@ -139,54 +139,13 @@ public class WekaTest {
 		
 	}
 	
-	/**
-	 * Consersion de campos Numericos a Nominales.
-	 * @param dataProcessed
-	 * @param variables
-	 * @return
-	 * @throws Exception
-	 */
-	public  static Instances NumericToNominal(Instances dataProcessed, String variables) throws Exception {
-		weka.filters.unsupervised.attribute.NumericToNominal convert = new weka.filters.unsupervised.attribute.NumericToNominal();
-		String[] options = new String[2];
-		options[0] = "-R";
-		options[1] = variables;
-		convert.setOptions(options);
-		convert.setInputFormat(dataProcessed);
-		Instances filterData = Filter.useFilter(dataProcessed, convert);
-		return filterData;
-	}
 	
-	/**
-	 * Generacion de Associaciones de la informacion
-	 * @param data
-	 */
-	private static void generateAssociations(Instances data) {
-		Apriori apriori = new Apriori();
-		apriori.setClassIndex(data.classIndex());
-		try {
-			System.out.println(data);
-			Instances data3 = NumericToNominal(data,"1-8");
-			System.out.println(data3);
-			apriori.buildAssociations(data3);
-			System.out.println(apriori);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 	
 	public static void main(String[] args) throws Exception {
 		BufferedReader datafile = readDataFile(data_set_diab);
  
 		Instances data = new Instances(datafile);
 		data.setClassIndex(data.numAttributes() - 1);
-		
-		
-		generateAssociations(data);
-		
-		
 		
 		// Do 10-split cross validation
 		Instances[][] split = crossValidationSplit(data, 200);
