@@ -16,10 +16,11 @@ public class AssociationExample {
 	
 	private static String data_set_diab="/home/jcorvi/workspace/WekaExample/resources/datasets-UCI//UCI/diabetes.arff";
 	
-	
+	private static String data_set_zoo="/home/jcorvi/workspace/WekaExample/resources/datasets-UCI//UCI/zoo.arff";
 	
 	public static void main(String[] args) throws Exception {
-		BufferedReader datafile = WekaTest.readDataFile(data_set_diab);
+		//BufferedReader datafile = WekaTest.readDataFile(data_set_diab);
+		BufferedReader datafile = WekaTest.readDataFile(data_set_zoo);
 		Instances data = new Instances(datafile);
 		data.setClassIndex(data.numAttributes() - 1);
 		generateAssociations(data);
@@ -53,9 +54,12 @@ public class AssociationExample {
 		apriori.setClassIndex(data.classIndex());
 		try {
 			System.out.println(data);
-			Instances data3 = NumericToNominal(data,"1-8");
+			Instances data3 = NumericToNominal(data,"2-18");
 			System.out.println(data3);
 			apriori.buildAssociations(data3);
+			//apriori.buildAssociations(data);
+			
+			
 			System.out.println(apriori);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
